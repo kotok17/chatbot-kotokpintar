@@ -64,22 +64,23 @@ async function sendMessage() {
 
     if (!inputText) return;
 
-    await saveMessage("user", inputText);
-    renderChat(); // Render chat setelah user mengirim pesan
+    await saveMessage("user", inputText);  // Simpan chat user
+    renderChat();
 
     // Tampilkan teks loading
     const botTyping = document.getElementById("botTyping");
     botTyping.classList.remove("hidden");
 
     setTimeout(async () => {
-        const botReply = getBotResponse(inputText);
-        await saveMessage("bot", botReply);
+        const botReply = await getBotResponse(inputText); // Tunggu hasilnya dulu!
+        await saveMessage("bot", botReply);  // Baru simpan ke IndexedDB
 
         // Sembunyikan teks loading setelah jawaban bot muncul
         botTyping.classList.add("hidden");
         renderChat();
     }, 1500); // Delay 1.5 detik sebelum bot menjawab
 }
+
 
 
 async function renderChat() {
@@ -133,8 +134,9 @@ function getBotResponse(input) {
     input = input.toLowerCase();
     const responses = {
         "halo": "Halo! Ada yang bisa saya bantu?",
-        "siapa kamu": "Saya adalah chatbot yang siap membantu!",
+        "siapa kamu": "Saya adalah DeepTok yang siap membantu!",
         "apa kabar": "Saya baik, bagaimana dengan Anda?",
+        "baik": "Senang mendengarnya, ada yang bisa dibantu?",
         "terima kasih": "Sama-sama! Senang bisa membantu.",
         "bye": "Sampai jumpa! 😊",
     };
@@ -189,5 +191,20 @@ document.getElementById("clearChat").addEventListener("click", function () {
     });
 });
 
-
+// Fungsi untuk mengambil jadwal sholat berdasarkan kota
+async function getPrayerTimes(city) {
+    try {
+        const response = await fetch(`https://api.myquran.com/v1/sholat/jadwal/${city}/today`);
+        const data = await response.json();
+        
+        if (data.status && data.data) {
+            const jadwal = data.data.jadwal;
+            return `Jadwal Sholat di ${city.toUpperCase()} hari ini:\n📌 Subuh: ${jadwal.subuh}\n📌 Dzuhur: ${jadwal.dzuhur}\n📌 Ashar: ${jadwal.ashar}\n📌 Maghrib: ${jadwal.maghrib}\n📌 Isya: ${jadwal.isya}`;
+        } else {
+            return "Maaf, tidak bisa mendapatkan jadwal sholat saat ini.";
+        }
+    } catch (error) {
+        return "Terjadi kesalahan saat mengambil data jadwal sholat.";
+    }
+}
 
