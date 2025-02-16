@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>DeepTok</title>
+    <!-- jsPDF -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+    <!-- Sweetalert2 -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <!-- Tambahkan Tailwind CSS dari CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            animation: {
+              fadeIn: "fadeIn 0.3s ease-in-out",
+            },
+            keyframes: {
+              fadeIn: {
+                "0%": { opacity: 0 },
+                "100%": { opacity: 1 },
+              },
+            },
+          },
+        },
+      };
+    </script>
+  </head>
+  <body class="bg-gray-100 flex justify-center items-center h-screen">
+    <div class="w-full max-w-md bg-white shadow-lg rounded-lg overflow-hidden">
+      <div class="p-4 bg-yellow-600 text-white text-center font-bold">
+        DeepTok (powered by Kotok)
+      </div>
+
+      <button
+        class="mb-2 ml-2 mt-2 p-2 bg-green-500 text-white rounded-lg"
+        id="downloadChat">
+        <i> Download Chat</i>
+      </button>
+
+      <button
+        onclick="changeUsername()"
+        class="mb-2 mt-4 bg-red-500 text-white px-4 py-2 rounded">
+        Ganti Nama
+      </button>
+
+      <!-- Form Login -->
+      <div
+        id="loginScreen"
+        class="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50">
+        <div class="bg-white p-6 rounded-lg shadow-lg w-80 text-center">
+          <h2 class="text-lg font-semibold mb-4">Masukkan Nama Anda</h2>
+          <input
+            type="text"
+            id="usernameInput"
+            class="w-full p-2 border rounded mb-4"
+            placeholder="Nama Anda" />
+          <button
+            onclick="saveUsername()"
+            class="bg-yellow-500 text-white px-4 py-2 rounded w-full">
+            Mulai Chat
+          </button>
+        </div>
+      </div>
+
+      <div
+        id="chatBox"
+        class="space-y-3 p-3 bg-gray-100 rounded-lg overflow-y-auto h-96"></div>
+
+      <div id="botTyping" class="hidden text-gray-500 italic">
+        DeepTok sedang mengetik...
+      </div>
+
+      <div class="p-4 border-t flex items-center gap-2">
+        <input
+          type="text"
+          id="userInput"
+          class="flex-1 p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
+          placeholder="Ketik pesan..." />
+        <button
+          onclick="sendMessage()"
+          class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition">
+          Kirim
+        </button>
+        <button
+          id="clearChat"
+          class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg transition">
+          Hapus
+        </button>
+      </div>
+    </div>
+    <script src="chatbot.js"></script>
+  </body>
+</html>
